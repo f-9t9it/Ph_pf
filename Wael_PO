@@ -1,0 +1,89 @@
+<img src="https://bp.9t9it.com/files/CWm8hgs.png" height="105" width="750"></img>
+<table class="table table-condensed table-hover table-bordered">
+	<tr>
+		<td colspan="6" align="center">Email : invoice@waelpharmacy.com</td>
+	</tr>
+	<tr>
+		<td style="width: 8%;"></td>
+                <td style="width: 46%;"></td>
+		<td style="width: 10%;"></td>
+		<td style="width: 8%;"></td>
+		<td style="width: 10%;"></td>
+		<td style="width: 8%;"></td>
+	</tr>
+	<tr>
+		<td colspan="6" align="center"><b>ORDER FORM</b></td>
+	</tr>
+	<tr>
+		<td style="width: 8%;"></td>
+                <td style="width: 46%;"></td>
+		<td style="width: 10%;"></td>
+		<td style="width: 8%;"></td>
+		<td style="width: 10%;"></td>
+		<td style="width: 8%;"></td>
+	</tr>
+	<tr>
+		<td style="width: 8%;">Customer Name</td>
+		<td colspan="2" style="width: 46%;">Balsam Pharmacy - Riffa </td> 
+		<td style="width: 8%;">Order No</td>
+		<td colspan="2" style="width: 10%;"> {{ doc.name }}</td>	
+	</tr>
+	<tr>
+		<td style="width: 8%;">Ship To</td>
+		{%- if doc.shipping_address -%}
+			<td colspan="2" style="width: 46%;"></td> 
+		{%- else -%}
+			<td colspan="2" style="width: 46%;">Balsam Pharmacy - West Riffa</td> 
+		{%- endif -%}
+		<td style="width: 8%;">Order Date</td>
+		<td colspan="2" style="width: 10%;"> {{ doc.get_formatted("transaction_date") }}</td>	
+	</tr>
+	<tr>
+		<td colspan="6" align="left">Further,I hereby confirm that we will be raising our purchase order to Wael Pharmacy only for those product which we are our valid Commercial Registration and/or NHRA licenses as per the laws and regulation of Kingdom of Bahrain </td>
+	</tr>
+	<tr>
+		<td colspan="2" style="width: 8%;">Ordered By : balsampharmacy@gmail.com</td>
+                
+		<td style="width: 10%;"></td>
+		<td colspan="3" style="width: 8%;">For Office Use Only</td>
+	</tr>
+	<tr>
+		<td rowspan="4" colspan="2" style="width: 8%;">Stamp & Signature</td>
+                <td rowspan="4" style="width: 10%;"></td>
+		<td colspan="3" style="width: 8%;">Approved By</td>
+	</tr>
+	<tr>
+		<td style="width: 8%;"></td>
+		<td style="width: 10%;"></td>
+		<td style="width: 8%;"></td>
+	</tr>
+	<tr>
+		<td colspan="3" style="width: 8%;">Transaction Date : </td>
+		
+	</tr>
+	<tr>
+		
+		<td colspan="3" style="width: 8%;">Transaction No : </td>
+	</tr>
+	<tr>
+		<td colspan="6" align="right">Please send the order to FAX 17377013 or Email-invoice@waelpharmacy.com</td>
+	</tr>
+	<tr>
+		<th style="width: 8%;text-align: right;">S.No</th>
+                <th style="width: 46%;">Item Name</th>
+		<th style="width: 10%;">Item Code</th>
+		<th style="width: 8%;text-align: right;">Retail Price(BD)</th>
+		<th style="width: 10%;text-align: right;">Whole Sale Price(BD)</th>
+		<th style="width: 8%;text-align: right;">Order Qty</th>
+	</tr>
+	{%- for row in doc.items -%}
+		<tr>
+			<td style="width: 8%;">{{ row.idx }}</td>
+                	<td style="width: 46%;">{{ row.item_name }}</td>
+			<td style="width: 10%;"></td>
+			<td style="width: 8%;text-align: right;"></td>
+			<td style="width: 10%;text-align: right;">{{ row.rate }}</td>
+			<td style="width: 8%;text-align: right;">{{ row.qty }}</td>
+		</tr>
+	{%- endfor -%}
+</table>
