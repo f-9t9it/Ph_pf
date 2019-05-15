@@ -1,0 +1,107 @@
+<style>
+	.print-format table, .print-format tr, 
+	.print-format td, .print-format div, .print-format p {
+		font-family: Sans;
+		line-height: 100%;
+white-space: nowrap
+		vertical-align: middle;
+	}
+
+
+	@media screen {
+		.print-format {
+			width: 4in;
+			padding: 0.25in;
+			min-height: 8in;
+		}
+	}
+</style>
+
+<b><p class="text-center">
+	{{ doc.company }}<br>
+</p>
+<p>
+Start Date time:   {{ doc.get_formatted('period_from')}}<br>
+End Date time:  {{ doc.get_formatted('period_to')}}<br>
+
+Cashier: {{ doc.cashier_name }}<br>
+
+</p><br>
+SALES REPORT
+<table class="table no-border">
+	{% for row in doc.payments %}
+		<tr>
+			<td>
+ {{ row.mode_of_payment }}</b>  </td>
+			<td class="text-right">{{ row.get_formatted("expected_amount") }}</b></td>
+			</tr>{% endfor %}
+<tr>
+			<td><b> NET SALES  </b> </td>
+			<td class="text-right"><b>{{ doc.get_formatted ('net_total') }}</b></td>
+			
+		</tr>
+<tr>
+			<td><b> TAX TOTAL  </b> </td>
+			<td class="text-right"><b>{{ doc.get_formatted ('tax_total') }}</b></td>
+			
+		</tr><tr>
+			<td><b> GRAND SALES</b> </td>
+			<td class="text-right"><b>{{ doc.get_formatted ('grand_total') }}</b></td>
+			
+		</tr>
+<tr><br>
+			<td><b>CASH REPORT</b> </td>
+</tr>
+<tr>
+			<td><b>OPENING CASH</b> </td>
+			<td class="text-right"><b>{{ doc.get_formatted ('opening_amount') }}</b></td>
+			
+		</tr>
+
+<tr>
+			<td><b>CLOSING CASH</b> </td>
+			<td class="text-right"><b>{{ doc.get_formatted ('closing_amount') }}</b></td>
+			
+		</tr>
+
+<tr>
+			<td><b>DISCOUNT</b> </td>
+			<td class="text-right"><b>{{ doc.get_formatted ('discount_total') }}</b></td>
+			
+		</tr>
+
+<tr>
+			<td><b>QUANTITY SOLD</b> </td>
+			<td class="text-right"><b>{{ doc.total_quantity }}</b></td>
+			
+		</tr>
+<tr>
+			<td><b>QUANTITY RETURN</b> </td>
+			<td class="text-right"><b>{{ doc.returns_quantity }}</b></td>
+			
+		</tr>
+<tr>
+			<td><b>NET QUANTITY SOLD</b> </td>
+			<td class="text-right"><b>{{ doc.get_formatted('total_quantity') }}</b></td>
+			
+		</tr>
+<tr>
+			<td><b>TOTAL INVOICE</b> </td>
+			<td class="text-right"><b>{{ doc.get_formatted('total_invoices') }}</b></td>
+			
+		</tr>
+
+
+<tr>
+			<td><b>AVG SALES/INVOICE</b> </td>
+			<td class="text-right"><b>{{ doc.get_formatted('average_sales') }}</b></td>
+			
+		</tr>
+<tr>
+			<td><b>TOTAL RETURNS</b> </td>
+			<td class="text-right"><b>{{ doc.get_formatted ('returns_total') }}</b></td>
+			
+		</tr>
+
+
+</table>
