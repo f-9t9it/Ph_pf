@@ -1,0 +1,118 @@
+<style>
+	.print-format table, .print-format tr, 
+	.print-format td, .print-format div, .print-format p {
+		font-family: arial;
+		line-height: 100%;
+		vertical-align: middle;
+	}
+	@media screen {
+		.print-format {
+			width: 4in;
+			padding: 0.15in;
+			min-height: 5in;
+	
+		}
+	}
+</style>
+
+<p class="text-center">
+<b>TAX INVOICE</b><br>
+<b>{{ company }}</b><br>
+<b>Phone No.: Number<br>
+VAT ID: VAT ID </b>
+</p>
+<p><b>{{  __("Bill No.") }}:</b> {{ offline_pos_name }}<br>
+	<b>{{ __("Customer") }}:</b> {{ customer }}<br>
+	<b>{{ __("Date") }}:</b> {{ frappe.datetime.str_to_user(posting_date) }} : {{ posting_time }}<br>
+<b>{{  __("Payment Mode") }}: {{ payments.filter(({amount}) => !!amount).map(({mode_of_payment }) => mode_of_payment).join(',') }} </b>
+</p>
+<hr>
+<table class="table table-condensed cart no-border">
+	<thead>
+		<tr>
+			<th width="40%">{{ __("Item") }}</b></th>
+			<th width="15%" class="text-right">{{ __("Qty") }}</th>
+			<th width="15%" class="text-right">{{ __("Net Total") }}</th>
+			<th width="15%" class="text-right">{{ __("VAT Amt") }}</th>
+			<th width="15%" class="text-right">{{ __("Total") }}</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for item in items %}
+		<tr>
+			<td>
+				{{ item.item_name }} - VAT@{{ item.item_tax_rate ? (JSON.parse(item.item_tax_rate)[`VAT - ${frappe.get_abbr(company)}`] || 0) : 0 }}%
+			</td>
+			<td class="text-right">{{ item.qty }}<br>@ {{ item.rate }}</td>
+			<td class="text-right">{{ format_currency (item.amount) }}</td>
+
+			<td class="text-right">{{  format_currency (item.qty * item.rate * (item.item_tax_rate ? (JSON.parse(item.item_tax_rate)[`VAT - ${frappe.get_abbr(company)}`] || 0) : 0)/100) }} </td>
+			
+
+<td class="text-right">{{ format_currency ( (item.rate * item.qty) + (item.qty * item.rate * (item.item_tax_rate ? (JSON.parse(item.item_tax_rate)[`VAT - ${frappe.get_abbr(company)}`] || 0) : 0)/100), currency, 3) }} </td>
+		</tr>
+		{% endfor %}
+	</tbody>
+</table>
+
+<table class="table table-condensed no-border">
+	<tbody>
+		<tr>
+			<td class="text-right" style="width: 40%">
+				<b>{{ __("Net Total") }}</b>
+			</td>
+			<td class="text-right">
+				<b>{{ format_currency(total, currency) }}</b>
+			</td>
+		</tr>
+		{% for row in taxes %}
+		{% if not row.included_in_print_rate %}
+		<tr>
+			<td class="text-right" style="width: 40%">
+				<b>{{ row.description }}</b>
+			</td>
+			<td class="text-right">
+				<b>{{ format_currency(row.tax_amount, currency) }}</b>
+			</td>
+		</tr>
+		{% endif %}
+		{% endfor %}
+		{% if discount_amount %}
+		<tr>
+			<td class="text-right" style="width: 40%">
+				<b>{{ __("Discount") }}</b>
+			</td>
+			<td class="text-right">
+				<b>{{ format_currency(discount_amount, currency) }}</b>
+			</td>
+		</tr>
+		
+		
+{% endif %}
+<tr>
+			<td class="text-right" style="width: 40%">
+				<b>{{ __("Grand Total") }}</b>
+			</td>
+			<td class="text-right">
+				<b>{{ format_currency(grand_total, currency) }}</b>
+			</td>
+		</tr>
+		<tr>
+			<td class="text-right" style="width: 40%">
+				<b>{{ __("Paid Amount") }}</b>
+			</td>
+			<td class="text-right">
+				<b>{{ format_currency(paid_amount, currency) }}</b>
+			</td>
+		</tr>
+
+<tr>
+<td class="text-right" style="width: 40%">
+				<b>{{ __("Change Amount") }}</b>
+			</td>
+			<td class="text-right">
+				<b>{{ format_currency(change_amount, currency) }}</b>
+			</td></tr>
+	</tbody>
+</table>
+<p class="text-center"><img src="{{ pos_name_barcode_uri }}" /></br><b>{{ __("Please keep the receipt for any exchange within 24Hrs. Exchange baby milk and fridge items not allowed") }}</b></p>
