@@ -1,0 +1,46 @@
+
+<style id=label>
+	.print-format table, .print-format tr, 
+	.print-format td, .print-format div, .print-format p {
+		font-family: serif;
+		line-height: 100%;
+		vertical-align: middle;
+white-space: nowrap;
+		overflow: hidden;
+		width: 100%;
+	}
+	@media screen {
+		.print-format {
+			width: 1.5in;
+			padding: 0.05in;
+			min-height: 1in;
+			 
+		}
+	}
+</style>
+
+{%- for row in doc.items -%}
+		{%- for qty in range (frappe.utils.cint(row.qty)) -%}
+<p class="text-center" style="font-size:9px">
+<b style="font-size:10px"> {{ doc.company }}</b> </br>
+<b style="font-size:9px"> {{row.item_name }}  </b> </br>
+<b style="font-size:10px" >Item Code: {{row.item_code }} </b></br>
+			<svg class="barcode"
+				jsbarcode-margin="0"
+				jsbarcode-margintop="0"
+				jsbarcode-marginbottom="1"
+				jsbarcode-height="25"
+				jsbarcode-width="1"
+				jsbarcode-fontsize="12"
+				jsbarcode-flat="true"
+				jsbarcode-value="{{ row.batch_no}}"/></br>
+
+<b style="font-size:12px"> {{ frappe.utils.formatdate(row.get_formatted('expiry'), "dd-MM-yyyy") }}  &nbsp; &nbsp; 
+BD{{ '%0.3f'|format(row.selling_price|float) }}</b></p>
+<p class=footer> </p> 
+{%- endfor -%}
+{%- endfor -%}
+<script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.9.0/dist/JsBarcode.all.min.js"></script>
+<script>
+JsBarcode(".barcode").init();
+</script>
