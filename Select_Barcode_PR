@@ -37,7 +37,7 @@
 				jsbarcode-flat="true"
 				jsbarcode-value="{{ row.batch_no}}"/></br>
 
-<b style="font-size:12px">{{ frappe.utils.formatdate(row.get_formatted('expiry'), "dd-MM-yyyy") }} &nbsp;&nbsp; &nbsp;   BD{{ '%0.3f'|format(row.selling_price|float) }}</b></p>
+<b style="font-size:12px">{{ frappe.utils.formatdate(row.get_formatted('expiry'), "dd-MM-yyyy") }} &nbsp;&nbsp; &nbsp;   BD.{{ '%0.3f'|format (frappe.db.get_value("Item Price", {"item_code": row.item_code, "price_list": "Standard Selling"}, "price_list_rate" )|float) }}</b></p>
 <p class=footer> </p> 
 {%- endfor -%}
 {%- endif -%}
