@@ -1,0 +1,7 @@
+frappe.ui.form.on('Purchase Invoice Item', {
+  item_code: async function(frm, cdt, cdn) {
+    const { item_code } = frappe.get_doc(cdt, cdn);
+    const { message: price = {} } = await frappe.db.get_value("Item Price", {"item_code": item_code, "price_list": "Standard Selling"}, "price_list_rate" );
+    frappe.model.set_value(cdt, cdn, 'retail_price', price.price_list_rate);
+  },
+});
